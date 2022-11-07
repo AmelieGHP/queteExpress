@@ -84,6 +84,8 @@ const getUserById = (req, res) => {
     });
 };
 
+// quête express 3
+
 const postMovies = (req, res) => {
   const { title, director, year, color, duration } = req.body;
   //res.status(200).send("Post route is working 🎉");
@@ -118,6 +120,8 @@ const postUsers = (req, res) => {
       res.status(500).send("Error saving the user");
     });
 };
+
+//quête express 04
 
 const putMovies = (req, res) => {
   const id = parseInt(req.params.id);
@@ -159,6 +163,42 @@ const putUsers = (req, res) => {
     });
 }
 
+// quête express 05
+
+const deleteMovies = (req, res) => {
+  const id = parseInt(req.params.id);
+  database
+    .query("DELETE FROM movies WHERE id = ?", [id])
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.status(404).send("Not Found");
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error deleting the movie");
+    });
+};
+
+const deleteUsers = (req, res) => {
+  const id = parseInt(req.params.id);
+  database
+    .query("DELETE FROM users WHERE id = ?", [id])
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.status(404).send("Not Found");
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error deleting the user");
+    });
+};
+
 module.exports = {
   getMovies,
   getMovieById,
@@ -167,5 +207,7 @@ module.exports = {
   postMovies,
   postUsers,
   putMovies,
-  putUsers
+  putUsers,
+  deleteMovies,
+  deleteUsers
 };
