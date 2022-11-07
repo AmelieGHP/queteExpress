@@ -99,8 +99,8 @@ const postMovies = (req, res) => {
       console.log(result.insertId)
     })
     .catch((err) => {
-      console.error(err);
       res.status(500).send("Error saving the movie");
+      console.error(err);
     });
 };
 

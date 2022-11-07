@@ -11,15 +11,17 @@ const welcome = (req, res) => {
 app.get("/", welcome);
 
 const movieHandlers = require("./movieHandlers");
+const { validateMovie, validateUser } = require("./validator.js");
+
 
 app.get("/api/movies", movieHandlers.getMovies);
 app.get("/api/movies/:id", movieHandlers.getMovieById);
 app.get("/api/users", movieHandlers.getUsers);
 app.get("/api/users/:id", movieHandlers.getUserById);
-app.post("/api/movies", movieHandlers.postMovies);
-app.post("/api/users", movieHandlers.postUsers);
-app.put("/api/movies/:id", movieHandlers.putMovies);
-app.put("/api/users/:id", movieHandlers.putUsers);
+app.post("/api/movies", validateMovie, movieHandlers.postMovies);
+app.post("/api/users", validateUser, movieHandlers.postUsers);
+app.put("/api/movies/:id", validateMovie, movieHandlers.putMovies);
+app.put("/api/users/:id", validateUser, movieHandlers.putUsers);
 app.delete("/api/movies/:id", movieHandlers.deleteMovies);
 app.delete("/api/users/:id", movieHandlers.deleteUsers);
 
