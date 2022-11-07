@@ -70,7 +70,7 @@ const getUserById = (req, res) => {
   const id = parseInt(req.params.id);
 
   database
-    .query("select * from users where id = ?", [id])
+    .query("select * from users")
     .then(([users]) => {
       if (users[0] != null) {
         res.json(users[0]);
@@ -84,9 +84,46 @@ const getUserById = (req, res) => {
     });
 };
 
+const postMovies = (req, res) => {
+  const { title, director, year, color, duration } = req.body;
+  //res.status(200).send("Post route is working 🎉");
+  database
+    .query(
+      "INSERT INTO movies(title, director, year, color, duration) VALUES (?, ?, ?, ?, ?)",
+      [title, director, year, color, duration]
+    )
+    .then(([result]) => {
+      res.location(`/api/movies/${result.insertId}`).sendStatus(201);
+      console.log(result.insertId)
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error saving the movie");
+    });
+};
+
+const postUsers = (req, res) => {
+  const { firstname, lastname, email, city, language } = req.body;
+  database
+    .query(
+      "INSERT INTO users(firstname, lastname, email, city, language) VALUES (?, ?, ?, ?, ?)",
+      [firstname, lastname, email, city, language]
+    )
+    .then(([result]) => {
+      res.location(`/api/users/${result.insertId}`).sendStatus(201);
+      console.log(result.insertId)
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error saving the user");
+    });
+};
+
 module.exports = {
   getMovies,
   getMovieById,
   getUsers,
   getUserById,
+  postMovies,
+  postUsers
 };
